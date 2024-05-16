@@ -48,7 +48,7 @@ export default function Search() {
     }
   };
   const handleAddToWishlist = (disc: IDisc) => {
-    // Placeholder for adding to wishlist logic
+
     console.log(`Added disc with ${disc.discName} to wishlist.`);
   };
 
@@ -72,19 +72,7 @@ export default function Search() {
             <p>Category: {disc.categoryName}</p>
             <p>Price: ${disc.discPrice}</p>
             <a href={disc.pageUrl}>More Info</a>
-            <button onClick={() => handleSelectForComparison(disc)}>
-              Select for Comparison
-            </button>
-            <button onClick={() => handleAddToWishlist(disc)}>Add to Wishlist</button>
-          </div>
-        ))}
-      </div>
-      <div>
-        <h2>Selected Discs for Comparison:</h2>
-        {selectedDiscs.map((disc, index) => (
-          <div key={index}>
-            <p>{disc.discName}</p>
-            {/* Display other disc details if needed */}
+            <a onClick={() => handleAddToWishlist(disc)}>Add to Wishlist</a>
           </div>
         ))}
       </div>

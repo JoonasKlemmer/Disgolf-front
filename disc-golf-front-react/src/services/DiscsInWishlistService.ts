@@ -1,20 +1,20 @@
 import { IUserInfo } from "@/state/AppContext";
 import axios from "axios";
 import { IResultObject } from "./IResultObject";
-import { IWishlist } from "@/domain/IWishlist";
+import { IDisc } from "@/domain/IDisc";
 
-export default class WishlistService {
+export default class DiscsInWishlistService {
     private constructor() {
 
     }
 
     private static httpClient = axios.create({
-        baseURL: 'https://localhost:7160/api/v1.0/wishlist',
+        baseURL: 'https://localhost:7160/api/v1.0/discsinwishlist',
     });
 
-    static async getAll(jwt: string): Promise<IResultObject<IWishlist[]>>{
+    static async getAll(jwt: string, wishlistId: string): Promise<IResultObject<IDisc[]>>{
         try {
-            const response = await WishlistService.httpClient.get<IWishlist[]>("", {
+            const response = await DiscsInWishlistService.httpClient.get<IDisc[]>("/" + wishlistId, {
                 headers: {
                     "Authorization": "Bearer " + jwt
                 }

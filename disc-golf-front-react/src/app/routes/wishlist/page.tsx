@@ -30,15 +30,24 @@ export default function Wishlist() {
         fetchData();
     }, [userInfo]);
 
+    const updateWishlistAfterDelete = async () => {
+        try {
+            const response = await DiscsInWishlistService.getWishlistById(userInfo!.jwt, selectedWishlist!);
+            if (response.data) {
+                setDiscsInWishlist(response.data);
+            }
+        } catch (error) {
+            console.error("Error updating wishlist after delete:", error);
+        }
+    };
+
     const handleWishlistClick = async (wishlistId: string) => {
         try {
             if (selectedWishlist === wishlistId) {
-                // If the clicked wishlist is already selected, close it
                 setSelectedWishlist(null);
-                setDiscsInWishlist([]); // Clear discs in wishlist
+                setDiscsInWishlist([]);
             } else {
-                // If a different wishlist is clicked, fetch discs and open it
-                const response = await DiscsInWishlistService.getAll(userInfo!.jwt, wishlistId);
+                const response = await DiscsInWishlistService.getWishlistById(userInfo!.jwt, wishlistId);
                 if (response.data) {
                     setDiscsInWishlist(response.data);
                     setSelectedWishlist(wishlistId);
@@ -46,6 +55,15 @@ export default function Wishlist() {
             }
         } catch (error) {
             console.error("Error loading discs in wishlist:", error);
+        }
+    };
+
+    const handleDeleteFromWishlist = async (discsInWishlistId: string) => {
+        try {
+            await DiscsInWishlistService.deleteFromWishlist(userInfo!.jwt, discsInWishlistId);
+            await updateWishlistAfterDelete();
+        } catch (error) {
+            console.error("Error deleting from wishlist:", error);
         }
     };
 
@@ -59,6 +77,7 @@ export default function Wishlist() {
                     {wishlists.map((wishlist) => (
                         <div key={wishlist.id}>
                             <h2 onClick={() => handleWishlistClick(wishlist.id)}>{wishlist.wishlistName}</h2>
+
                             {selectedWishlist === wishlist.id && (
                                 discsInWishlist.map((disc, index) => (
                                     <div key={index}>
@@ -71,6 +90,7 @@ export default function Wishlist() {
                                         <p>Category: {disc.categoryName}</p>
                                         <p>Price: ${disc.discPrice}</p>
                                         <a href={disc.pageUrl}>More Info</a>
+                                        <a onClick={() => handleDeleteFromWishlist(disc.discsInWishlistId)}>Delete From Wishlist</a>
                                     </div>
                                 ))
                             )}

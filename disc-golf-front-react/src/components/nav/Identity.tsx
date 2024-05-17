@@ -35,10 +35,10 @@ const LoggedOut = () => {
     return (
         <ul className="navbar-nav">
             <li className="nav-item">
-                <Link href="register" className="nav-link text-dark">Register</Link>
+                <Link href="/routes/register" className="nav-link text-dark">Register</Link>
             </li>
             <li className="nav-item">
-                <Link href="login" className="nav-link text-dark">Login</Link>
+                <Link href="/routes/login" className="nav-link text-dark">Login</Link>
             </li>
         </ul>
     );

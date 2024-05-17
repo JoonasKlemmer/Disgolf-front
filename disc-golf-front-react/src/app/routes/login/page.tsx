@@ -8,7 +8,7 @@ import { json } from "stream/consumers";
 
 export default function Login() {
     const router = useRouter();
-    const [email, setEmail] = useState("joonas@eesti.ee");
+    const [email, setEmail] = useState("WSTS@gmail.com");
     const [pwd, setPwd] = useState("Joonash34!");
 
     const [validationError, setvalidationError] = useState("");

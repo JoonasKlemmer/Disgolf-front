@@ -1,4 +1,6 @@
 export interface IDisc {
+    "discFromPageId": string,
+    "discsInWishlistId": string,
     "discName": string,
     "speed": number,
     "glide": number,

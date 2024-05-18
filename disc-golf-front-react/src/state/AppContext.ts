@@ -8,7 +8,7 @@ export interface IUserInfo {
 }
 
 export interface IUserContext {
-    userInfo: IUserInfo | null,
+    userInfo: IUserInfo,
     setUserInfo: (userInfo: IUserInfo | null) => void
 }
 

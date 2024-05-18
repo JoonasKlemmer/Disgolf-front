@@ -16,9 +16,17 @@ export default function Wishlist() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await WishlistService.getAll(userInfo!.jwt);
-                if (response.data) {
-                    setWishlists(response.data);
+                const wishlistResponse = await WishlistService.getAll(userInfo!.jwt);
+                if (wishlistResponse.data) {
+                    setWishlists(wishlistResponse.data);
+                    // Fetch discs in the wishlist
+                    if (wishlistResponse.data.length > 0) {
+                        const firstWishlistId = wishlistResponse.data[0].id;
+                        const discsResponse = await DiscsInWishlistService.getWishlistById(userInfo!.jwt);
+                        if (discsResponse.data) {
+                            setDiscsInWishlist(discsResponse.data);
+                        }
+                    }
                 }
                 setIsLoading(false);
             } catch (error) {
@@ -30,38 +38,14 @@ export default function Wishlist() {
         fetchData();
     }, [userInfo]);
 
-    const updateWishlistAfterDelete = async () => {
-        try {
-            const response = await DiscsInWishlistService.getWishlistById(userInfo!.jwt, selectedWishlist!);
-            if (response.data) {
-                setDiscsInWishlist(response.data);
-            }
-        } catch (error) {
-            console.error("Error updating wishlist after delete:", error);
-        }
-    };
-
-    const handleWishlistClick = async (wishlistId: string) => {
-        try {
-            if (selectedWishlist === wishlistId) {
-                setSelectedWishlist(null);
-                setDiscsInWishlist([]);
-            } else {
-                const response = await DiscsInWishlistService.getWishlistById(userInfo!.jwt, wishlistId);
-                if (response.data) {
-                    setDiscsInWishlist(response.data);
-                    setSelectedWishlist(wishlistId);
-                }
-            }
-        } catch (error) {
-            console.error("Error loading discs in wishlist:", error);
-        }
-    };
-
     const handleDeleteFromWishlist = async (discsInWishlistId: string) => {
         try {
             await DiscsInWishlistService.deleteFromWishlist(userInfo!.jwt, discsInWishlistId);
-            await updateWishlistAfterDelete();
+            // Update discs in the wishlist after deletion
+            const updatedDiscsResponse = await DiscsInWishlistService.getWishlistById(userInfo!.jwt);
+            if (updatedDiscsResponse.data) {
+                setDiscsInWishlist(updatedDiscsResponse.data);
+            }
         } catch (error) {
             console.error("Error deleting from wishlist:", error);
         }
@@ -69,34 +53,28 @@ export default function Wishlist() {
 
     return (
         <>
-            <h1>Wishlist</h1>
             {isLoading ? (
                 <h2>Loading...</h2>
             ) : (
-                <div>
+                <>
                     {wishlists.map((wishlist) => (
                         <div key={wishlist.id}>
-                            <h2 onClick={() => handleWishlistClick(wishlist.id)}>{wishlist.wishlistName}</h2>
-
-                            {selectedWishlist === wishlist.id && (
-                                discsInWishlist.map((disc, index) => (
-                                    <div key={index}>
+                            <h1>{wishlist.wishlistName}</h1>
+                            <div className="disc-grid">
+                                {discsInWishlist.map((disc, index) => (
+                                    <div key={index} className="disc-item">
                                         <h2>{disc.discName}</h2>
-                                        <p>Speed: {disc.speed}</p>
-                                        <p>Glide: {disc.glide}</p>
-                                        <p>Turn: {disc.turn}</p>
-                                        <p>Fade: {disc.fade}</p>
-                                        <p>Manufacturer: {disc.manufacturerName}</p>
-                                        <p>Category: {disc.categoryName}</p>
-                                        <p>Price: ${disc.discPrice}</p>
-                                        <a href={disc.pageUrl}>More Info</a>
-                                        <a onClick={() => handleDeleteFromWishlist(disc.discsInWishlistId)}>Delete From Wishlist</a>
+                                        <p>{disc.speed} | {disc.glide} | {disc.turn} | {disc.fade}</p>
+                                        <p>{disc.manufacturerName}</p>
+                                        <p>{disc.categoryName}</p>
+                                        <a href={disc.pageUrl}>{disc.discPrice}€</a><br/>
+                                        <button onClick={() => handleDeleteFromWishlist(disc.discsInWishlistId)}>Remove</button>
                                     </div>
-                                ))
-                            )}
+                                ))}
+                            </div>
                         </div>
                     ))}
-                </div>
+                </>
             )}
         </>
     );

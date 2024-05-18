@@ -12,9 +12,9 @@ export default class DiscsInWishlistService {
         baseURL: 'https://localhost:7160/api/v1.0/discsinwishlist',
     });
 
-    static async getWishlistById(jwt: string, wishlistId: string): Promise<IResultObject<IDisc[]>>{
+    static async getWishlistById(jwt: string): Promise<IResultObject<IDisc[]>>{
         try {
-            const response = await DiscsInWishlistService.httpClient.get<IDisc[]>("/" + wishlistId, {
+            const response = await DiscsInWishlistService.httpClient.get<IDisc[]>("/", {
                 headers: {
                     "Authorization": "Bearer " + jwt
                 }

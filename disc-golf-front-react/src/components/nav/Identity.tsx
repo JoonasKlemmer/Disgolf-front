@@ -1,5 +1,6 @@
 "use client"
 
+import AccountService from "@/services/AccountService";
 import { AppContext, IUserInfo } from "@/state/AppContext";
 import Link from "next/link";
 import { useContext } from "react";
@@ -16,6 +17,7 @@ const LoggedIn = () => {
     const { userInfo, setUserInfo } = useContext(AppContext)!;
 
     const doLogout = () => {
+        AccountService.logout(userInfo!)
         setUserInfo(null);
     }
 

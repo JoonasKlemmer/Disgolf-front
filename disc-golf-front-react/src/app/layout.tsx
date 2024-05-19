@@ -6,6 +6,7 @@ import BootstrapActivation from '@/components/BootstrapActivation';
 import Footer from "@/components/nav/Footer";
 import Header from "@/components/nav/Header";
 import AppState from "@/components/AppState";
+import AccountService from "@/services/AccountService";
 
 const inter = Inter({ subsets: ["latin"] });
 

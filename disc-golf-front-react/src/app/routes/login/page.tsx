@@ -23,8 +23,9 @@ export default function Login() {
 
         const response = await AccountService.login(email, pwd);
         if (response.data) {
+            localStorage.setItem("userData", JSON.stringify(response.data))
             setUserInfo(response.data);
-            router.push("/");
+            router.push("/routes/search");
         }
 
         if (response.errors && response.errors.length > 0) {

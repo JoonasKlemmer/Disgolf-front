@@ -5,24 +5,30 @@ import { IDisc } from "@/domain/IDisc";
 import WishlistService from "@/services/WishlistService";
 import DiscsInWishlistService from "@/services/DiscsInWishlistService";
 import { AppContext } from "@/state/AppContext";
+import { useRouter } from "next/navigation";
 
 export default function Wishlist() {
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
     const [wishlists, setWishlists] = useState<IWishlist[]>([]);
     const [selectedWishlist, setSelectedWishlist] = useState<string | null>(null);
     const [discsInWishlist, setDiscsInWishlist] = useState<IDisc[]>([]);
     const { userInfo } = useContext(AppContext)!;
 
+    if(localStorage.getItem("userData") === null){
+        router.push("/routes/login");
+        return;
+    }
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const wishlistResponse = await WishlistService.getAll(userInfo!.jwt);
+                let item = JSON.parse(localStorage.getItem("userData")!);
+                const wishlistResponse = await WishlistService.getAll(item.jwt);
                 if (wishlistResponse.data) {
                     setWishlists(wishlistResponse.data);
                     // Fetch discs in the wishlist
                     if (wishlistResponse.data.length > 0) {
-                        const firstWishlistId = wishlistResponse.data[0].id;
-                        const discsResponse = await DiscsInWishlistService.getWishlistById(userInfo!.jwt);
+                        const discsResponse = await DiscsInWishlistService.getWishlistById(item.jwt);
                         if (discsResponse.data) {
                             setDiscsInWishlist(discsResponse.data);
                         }

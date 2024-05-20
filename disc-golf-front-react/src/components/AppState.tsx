@@ -1,28 +1,32 @@
 "use client"
 
-import AccountService from "@/services/AccountService";
-import { AppContext, IUserInfo } from "@/state/AppContext";
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
 
-export default function AppState({
-    children,
-}: Readonly<{
-    children: React.ReactNode;
-}>) {
-    const [userInfo, setUserInfo] = useState<IUserInfo | null>((() => {
-        const storedUserInfo = localStorage.getItem("userData");
-        return storedUserInfo ? JSON.parse(storedUserInfo) : null;
-    }));
-    if(localStorage.getItem("userData") !== null){
-        AccountService.refreshJwtToken()
-    }
-    
-    console.log(localStorage.getItem("userData"))
+import { AppContext, IUserInfo } from '@/state/AppContext';
 
+const AppState: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+    const [userInfo, setUserInfo] = useState<IUserInfo | null>(null);
+
+    useEffect(() => {
+        if (typeof localStorage !== 'undefined') {
+            const storedUserInfo = localStorage.getItem("userData");
+            if (storedUserInfo) {
+                setUserInfo(JSON.parse(storedUserInfo));
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        if (userInfo && typeof localStorage !== 'undefined') {
+            localStorage.setItem("userData", JSON.stringify(userInfo));
+        }
+    }, [userInfo]);
 
     return (
         <AppContext.Provider value={{ userInfo, setUserInfo }}>
             {children}
         </AppContext.Provider>
     );
-}
+};
+
+export default AppState;

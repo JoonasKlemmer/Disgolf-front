@@ -1,7 +1,9 @@
 import axios from "axios";
 import { IResultObject } from "./IResultObject";
-import { IDisc } from "@/domain/IDisc";
 import { Console } from "console";
+import { IDisc } from "@/domain/IDisc";
+import { IDiscFromPage } from "@/domain/IDiscFromPage";
+
 
 export default class DiscService {
     private constructor() {
@@ -9,12 +11,12 @@ export default class DiscService {
     }
 
     private static httpClient = axios.create({
-        baseURL: 'https://localhost:7160/api/v1.0/disc',
+        baseURL: 'https://localhost:7160/api/v1.0/discfrompage',
     });
 
-    static async getAllDiscs(): Promise<IResultObject<IDisc[]>>{
+    static async getDiscFromPageById(discId: string): Promise<IResultObject<IDiscFromPage[]>>{
         try {
-            const response = await DiscService.httpClient.get<IDisc[]>("", {
+            const response = await DiscService.httpClient.get<IDiscFromPage[]>("/" + discId, {
             });
 
             if (response.status < 300) {

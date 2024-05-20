@@ -1,5 +1,5 @@
-export interface IDisc {
-    "id": string,
+export interface IDiscFromPage {
+    "discFromPageId": string,
     "name": string,
     "speed": number,
     "glide": number,
@@ -7,4 +7,7 @@ export interface IDisc {
     "fade": number,
     "categoryName": string,
     "manufacturerName": string
+    "discPrice": number
+    "discsInWishlistId": string
+    "pageUrl": string
 }

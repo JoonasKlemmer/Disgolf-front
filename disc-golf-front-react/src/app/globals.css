@@ -49,3 +49,33 @@ padding: 10px;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 16px; /* Adjust the gap between items as needed */
 }
+
+.centered-container {
+    display: flex;
+    justify-content: center;
+}
+
+.disc-item-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.discs-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.disc-item a {
+    margin-right: auto; /* Pushes the link to the left */
+}
+
+.price-buttons-container {
+    display: flex;
+    align-items: center;
+}
+
+.action-button {
+    margin-left: 10px;
+}

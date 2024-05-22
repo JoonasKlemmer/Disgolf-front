@@ -4,18 +4,22 @@ import { IResultObject } from "./IResultObject";
 
 import { IDisc } from "@/domain/IDisc";
 import { IDiscFromPage } from "@/domain/IDiscFromPage";
+import AccountService from "./AccountService";
 
 export default class DiscsInWishlistService {
     private constructor() {
 
     }
 
+    
+
     private static httpClient = axios.create({
         baseURL: 'https://localhost:7160/api/v1.0/discsinwishlist',
     });
 
-    static async getAllDiscsInWishlistById(jwt: string): Promise<IResultObject<IDiscFromPage[]>>{
+    static async getAllDiscsInWishlistById(): Promise<IResultObject<IDiscFromPage[]>>{
         try {
+            let jwt = JSON.parse(localStorage.getItem("userData")!).jwt;
             const response = await DiscsInWishlistService.httpClient.get<IDiscFromPage[]>("/", {
                 headers: {
                     "Authorization": "Bearer " + jwt
@@ -38,7 +42,8 @@ export default class DiscsInWishlistService {
     }
 
 
-    static async deleteFromWishlist(jwt: string, discsInWishlistId: string): Promise<IResultObject<IDiscFromPage[]>>{
+    static async deleteFromWishlist(discsInWishlistId: string): Promise<IResultObject<IDiscFromPage[]>>{
+        let jwt = JSON.parse(localStorage.getItem("userData")!).jwt;
         try {
             const response = await DiscsInWishlistService.httpClient.delete<void>("/" + discsInWishlistId, {
                 headers: {
@@ -65,8 +70,9 @@ export default class DiscsInWishlistService {
 
 
 
-    static async addDiscToWishlist(jwt: string, wishlistId: string, discFromPageId: string){
+    static async addDiscToWishlist(wishlistId: string, discFromPageId: string){
         try {
+            let jwt = JSON.parse(localStorage.getItem("userData")!).jwt;
             const requestBody = {
                 DiscFromPageId: discFromPageId,
                 WishlistId: wishlistId
@@ -95,8 +101,9 @@ export default class DiscsInWishlistService {
         }
     }
 
-    static async discAlreadyInWishlist(jwt: string, discFromPageId: string): Promise<IResultObject<boolean>> {
+    static async discAlreadyInWishlist(discFromPageId: string): Promise<IResultObject<boolean>> {
         try {
+            let jwt = JSON.parse(localStorage.getItem("userData")!).jwt;
             const response = await DiscsInWishlistService.httpClient.get<boolean>("/" + discFromPageId, {
                 headers: {
                     "Authorization": "Bearer " + jwt

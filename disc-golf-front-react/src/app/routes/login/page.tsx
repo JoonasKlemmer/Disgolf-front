@@ -3,8 +3,7 @@
 import AccountService from "@/services/AccountService";
 import { AppContext } from "@/state/AppContext";
 import { useRouter } from "next/navigation";
-import { useContext, useState } from "react";
-import { json } from "stream/consumers";
+import { useContext, useEffect, useState } from "react";
 
 export default function Login() {
     const router = useRouter();
@@ -14,6 +13,12 @@ export default function Login() {
     const [validationError, setvalidationError] = useState("");
 
     const { userInfo, setUserInfo } = useContext(AppContext)!;
+    
+    useEffect(() => {
+        if (userInfo) {
+          router.push("/");
+        }
+      }, [userInfo, router]);
 
     const validateAndLogin = async () => {
         if (email.length < 5 || pwd.length < 6) {
@@ -23,7 +28,6 @@ export default function Login() {
 
         const response = await AccountService.login(email, pwd);
         if (response.data) {
-            localStorage.setItem("userData", JSON.stringify(response.data))
             setUserInfo(response.data);
             router.push("/routes/search");
         }

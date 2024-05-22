@@ -6,14 +6,17 @@ import DiscsInWishlistService from "@/services/DiscsInWishlistService";
 import { AppContext } from "@/state/AppContext";
 import { useRouter } from "next/navigation";
 import { IDiscFromPage } from "@/domain/IDiscFromPage";
+import { handleDeleteFromWishlist } from "@/components/AddOrRemoveFromWishlist";
+import AccountService from "@/services/AccountService";
 
 export default function Wishlist() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
     const [wishlists, setWishlists] = useState<IWishlist[]>([]);
-    const [selectedWishlist, setSelectedWishlist] = useState<string | null>(null);
     const [discsInWishlist, setDiscsInWishlist] = useState<IDiscFromPage[]>([]);
     const { userInfo } = useContext(AppContext)!;
+
+
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -23,13 +26,14 @@ export default function Wishlist() {
                 return;
             }
             const fetchData = async () => {
+                await AccountService.isTokenExpired();
                 try {
-                    let item = JSON.parse(localStorage.getItem("userData")!);
-                    const wishlistResponse = await WishlistService.getAll(item.jwt);
+                    
+                    const wishlistResponse = await WishlistService.getAll();
                     if (wishlistResponse.data) {
                         setWishlists(wishlistResponse.data);
                         if (wishlistResponse.data.length > 0) {
-                            const discsResponse = await DiscsInWishlistService.getAllDiscsInWishlistById(item.jwt);
+                            const discsResponse = await DiscsInWishlistService.getAllDiscsInWishlistById();
                             if (discsResponse.data) {
                                 setDiscsInWishlist(discsResponse.data);
                             }
@@ -46,17 +50,16 @@ export default function Wishlist() {
         }
     }, [userInfo, router]);
 
-    const handleDeleteFromWishlist = async (discsInWishlistId: string) => {
+    const handleDiscDeletion = async (discsInWishlistId: string) => {
         try {
-            await DiscsInWishlistService.deleteFromWishlist(userInfo!.jwt, discsInWishlistId);
-            // Update discs in the wishlist after deletion
-            const updatedDiscsResponse = await DiscsInWishlistService.getAllDiscsInWishlistById(userInfo!.jwt);
-            if (updatedDiscsResponse.data) {
-                setDiscsInWishlist(updatedDiscsResponse.data);
-            }
+            await handleDeleteFromWishlist(discsInWishlistId, updateDiscsInWishlist);
         } catch (error) {
-            console.error("Error deleting from wishlist:", error);
+            console.error("Error deleting disc from wishlist:", error);
         }
+    };
+
+    const updateDiscsInWishlist = (deletedDiscId: string) => {
+        setDiscsInWishlist(prevDiscs => prevDiscs.filter(disc => disc.discsInWishlistId !== deletedDiscId));
     };
 
     return (
@@ -77,7 +80,7 @@ export default function Wishlist() {
                                         <p>{disc.categoryName}</p>
                                         <p>{disc.discPrice}</p>
                                         <p>{disc.pageUrl}</p>
-                                        <button onClick={() => handleDeleteFromWishlist(disc.discsInWishlistId)}>Remove</button>
+                                        <button onClick={() => handleDiscDeletion(disc.discsInWishlistId)}>Remove</button>
                                     </div>
                                 ))}
                             </div>

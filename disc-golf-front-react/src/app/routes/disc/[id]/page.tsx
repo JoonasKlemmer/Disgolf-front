@@ -5,7 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import DiscFromPageService from "@/services/DiscFromPageService";
 import { AppContext } from "@/state/AppContext";
-import { handleAddToWishlist } from "@/components/handleAddtoWishlist";
+import { handleAddToWishlist } from "@/components/AddOrRemoveFromWishlist";
 import { IDiscFromPage } from "@/domain/IDiscFromPage";
 
 export default function DiscDetails() {
@@ -57,7 +57,7 @@ export default function DiscDetails() {
                         <div className="price-buttons-container">
                             <p>{disc.discPrice}€</p>
                             {userInfo && (
-                                <button onClick={() => handleAddToWishlist(userInfo.jwt, disc)}>Add to Wishlist</button>
+                                <button onClick={() => handleAddToWishlist(disc)}>Add to Wishlist</button>
                             )}
                             <button onClick={() => handleCompare(disc)} className="action-button">
                                 Compare

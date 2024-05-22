@@ -12,8 +12,9 @@ export default class WishlistService {
         baseURL: 'https://localhost:7160/api/v1.0/wishlist',
     });
 
-    static async getAll(jwt: string): Promise<IResultObject<IWishlist[]>>{
+    static async getAll(): Promise<IResultObject<IWishlist[]>>{
         try {
+            let jwt = JSON.parse(localStorage.getItem("userData")!).jwt;
             const response = await WishlistService.httpClient.get<IWishlist[]>("", {
                 headers: {
                     "Authorization": "Bearer " + jwt

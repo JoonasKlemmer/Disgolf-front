@@ -2,10 +2,14 @@ import { IUserInfo } from "@/state/AppContext";
 import axios from "axios";
 import { IResultObject } from "./IResultObject";
 import { IRegisterData } from "@/domain/IRegisterData";
-import { userInfo } from "os";
+import jwt from "jsonwebtoken"
+
+
 
 
 export default class AccountService {
+
+    static readonly expiresInSeconds = 10
     private static httpClient = axios.create(
         {
             baseURL: 'https://localhost:7160/api/v1.0/Identity/Account/',
@@ -19,11 +23,10 @@ export default class AccountService {
             Password: pwd
         }
         try {
-            const response = await AccountService.httpClient.post<IUserInfo>("Login", loginData);
+            
+            const response = await AccountService.httpClient.post<IUserInfo>("Login"+ "?expiresInSeconds="+ AccountService.expiresInSeconds, loginData);
             if (response.status < 300) {
-                localStorage.setItem('jwtToken', response.data.jwt);
-                localStorage.setItem('refreshToken', response.data.refreshToken);
-                console
+                localStorage.setItem("userData", JSON.stringify(response.data))
                 return {
                     data: response.data
                 }
@@ -42,7 +45,6 @@ export default class AccountService {
         try {
             const response = await AccountService.httpClient.post<IUserInfo>("register", data);
 
-            console.log('register response', response);
             if (response.status < 300) {
                 return {
                     data: response.data
@@ -58,23 +60,23 @@ export default class AccountService {
         }
     }
 
-    static async logout(data: IUserInfo): Promise<true | undefined> {
+    static async logout(): Promise<true | undefined> {
+        await AccountService.isTokenExpired();
         try {
-            localStorage.removeItem('userData');
+            let item = JSON.parse(localStorage.getItem("userData")!);
             const response = await AccountService.httpClient.post(
-                'logout', { refreshToken: data.refreshToken },
+                'logout', { refreshToken: item.refreshToken },
                 {
                     headers: {
-                        'Authorization': 'Bearer ' + data.jwt,
+                        'Authorization': 'Bearer ' + item.jwt,
                         'Content-Type': 'application/json'
                     }
                 }
             );
 
-            console.log('logout response', response);
             if (response.status === 200) {
                 
-                
+                localStorage.removeItem("userData");
                 return true;
             }
             return undefined;
@@ -87,20 +89,19 @@ export default class AccountService {
     static async refreshJwtToken(): Promise<IResultObject<IUserInfo>> {
     
         try {
-
+            
             let item = JSON.parse(localStorage.getItem("userData")!);
             
             const response = await AccountService.httpClient.post(
-                'RefreshTokenData', { jwt: item.jwt, refreshToken: item.refreshToken},
+                'RefreshTokenData'+ "?expiresInSeconds="+ AccountService.expiresInSeconds, { jwt: item.jwt, refreshToken: item.refreshToken},
                 {
                     headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem("jwtToken"),
+                        'Authorization': 'Bearer ' + item.jwt,
                         'Content-Type': 'application/json'
                     }
                 })
                 
             if (response.status < 300) {
-                console.log("UUENDASIN JWT JA REFRESH TOKENI")
                 item.refreshToken = response.data.refreshToken;
                 item.jwt = response.data.jwt;
                 
@@ -120,5 +121,20 @@ export default class AccountService {
             };
         }
     }
+
+    static  isTokenExpired = async (): Promise<boolean> => {
+        const jwtFromUserData = JSON.parse(localStorage.getItem("userData")!).jwt;
+        try {
+            const { exp } = jwt.decode(jwtFromUserData) as { exp: number };
+            const expirationDatetimeInSeconds = exp * 1000;
+            if(Date.now() >= expirationDatetimeInSeconds){
+                await AccountService.refreshJwtToken();
+                console.log("REFRESHED TOKEN")
+            }
+            return true;
+        } catch {
+            return true;
+        }
+    };
 
 }

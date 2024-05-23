@@ -7,6 +7,7 @@ import DiscFromPageService from "@/services/DiscFromPageService";
 import { AppContext } from "@/state/AppContext";
 import { handleAddToWishlist } from "@/components/AddOrRemoveFromWishlist";
 import { IDiscFromPage } from "@/domain/IDiscFromPage";
+import Image from 'next/image'
 
 export default function DiscDetails() {
     const [discs, setDiscs] = useState<IDiscFromPage[]>([]);
@@ -52,7 +53,7 @@ export default function DiscDetails() {
                 {discs.map((disc) => (
                     <div key={disc.discFromPageId} className="discs-item">
                         <a href={disc.pageUrl} target="_blank">
-                            {disc.pageUrl}
+                            Go to page
                         </a>
                         <div className="price-buttons-container">
                             <p>{disc.discPrice}€</p>
@@ -62,6 +63,12 @@ export default function DiscDetails() {
                             <button onClick={() => handleCompare(disc)} className="action-button">
                                 Compare
                             </button>
+                            <Image
+                                    src={disc.pictureUrl}
+                                    width={200}
+                                    height={200}
+                                    alt={disc.name}
+                                />
                         </div>
                     </div>
                 ))}

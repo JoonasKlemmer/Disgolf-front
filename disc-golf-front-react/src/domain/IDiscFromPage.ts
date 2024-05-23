@@ -10,4 +10,5 @@ export interface IDiscFromPage {
     "discPrice": number
     "discsInWishlistId": string
     "pageUrl": string
+    "pictureUrl":string
 }

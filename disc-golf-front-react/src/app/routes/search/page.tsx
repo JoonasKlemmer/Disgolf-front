@@ -4,12 +4,13 @@ import DiscService from "@/services/DiscService";
 import { useRouter } from "next/navigation";
 import { IDisc } from "@/domain/IDisc";
 
+
 export default function Search() {
     const [isLoading, setIsLoading] = useState(true);
     const [discs, setDiscs] = useState<IDisc[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const router = useRouter();
- 
+
     useEffect(() => {
         const loadData = async () => {
             const response = await DiscService.getAllDiscs();
@@ -54,7 +55,7 @@ export default function Search() {
                             >
                                 <h2>{disc.name}</h2>
                                 <p>
-                                {disc.speed} | {disc.glide} | {disc.turn} | {disc.fade}
+                                    {disc.speed} | {disc.glide} | {disc.turn} | {disc.fade}
                                 </p>
                                 <p>{disc.manufacturerName}</p>
                                 <p>{disc.categoryName}</p>

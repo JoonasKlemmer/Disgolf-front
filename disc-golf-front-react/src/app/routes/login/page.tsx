@@ -33,7 +33,7 @@ export default function Login() {
         }
 
         if (response.errors && response.errors.length > 0) {
-            setvalidationError(response.errors[0]);
+            setvalidationError("Email and/or password can't be found");
         }
 
     }

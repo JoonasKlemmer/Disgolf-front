@@ -3,10 +3,11 @@
 import React, { useState, useEffect } from 'react';
 
 import { AppContext, IUserInfo } from '@/state/AppContext';
+import AccountService from '@/services/AccountService';
 
 const AppState: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
     const [userInfo, setUserInfo] = useState<IUserInfo | null>(null);
-
+    
     useEffect(() => {
         if (typeof localStorage !== 'undefined') {
             const storedUserInfo = localStorage.getItem("userData");

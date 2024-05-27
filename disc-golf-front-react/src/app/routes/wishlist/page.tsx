@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { IDiscFromPage } from "@/domain/IDiscFromPage";
 import { handleDeleteFromWishlist } from "@/components/AddOrRemoveFromWishlist";
 import AccountService from "@/services/AccountService";
+import Image from 'next/image'
 
 export default function Wishlist() {
     const router = useRouter();
@@ -21,14 +22,14 @@ export default function Wishlist() {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const userData = localStorage.getItem("userData");
-            if(!userData){
+            if (!userData) {
                 router.push("/routes/login");
                 return;
             }
             const fetchData = async () => {
                 await AccountService.isTokenExpired();
                 try {
-                    
+
                     const wishlistResponse = await WishlistService.getAll();
                     if (wishlistResponse.data) {
                         setWishlists(wishlistResponse.data);
@@ -74,16 +75,26 @@ export default function Wishlist() {
                             <div className="disc-grid">
                                 {discsInWishlist.map((disc, index) => (
                                     <div key={index} className="disc-item">
+
                                         <h2>{disc.name}</h2>
                                         <p>{disc.speed} | {disc.glide} | {disc.turn} | {disc.fade}</p>
                                         <p>{disc.manufacturerName}</p>
                                         <p>{disc.categoryName}</p>
                                         <p>{disc.discPrice}</p>
-                                        <p>{disc.pageUrl}</p>
+                                        <p><a href={disc.pageUrl} target="_blank">Go to page</a></p>
                                         <button onClick={() => handleDiscDeletion(disc.discsInWishlistId)}>Remove</button>
+                                        <Image
+                                            src={disc.pictureUrl}
+                                            width={200}
+                                            height={200}
+                                            alt={disc.name}
+                                        />
                                     </div>
+
+
                                 ))}
                             </div>
+
                         </div>
                     ))}
                 </>

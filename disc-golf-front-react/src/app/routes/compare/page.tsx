@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AppContext } from "@/state/AppContext";
 import { IDiscFromPage } from "@/domain/IDiscFromPage";
+import Image from 'next/image'
 
 export default function Compare() {
     const [compareList, setCompareList] = useState<IDiscFromPage[]>([]);
@@ -27,13 +28,7 @@ export default function Compare() {
     return (
         <div>
             <h1>Compare Discs</h1>
-            <div
-                style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-                    gap: "16px",
-                }}
-            >
+            <div className="disc-grid">
                 {compareList.map((disc, index) => (
                     <div key={index} className="disc-item">
                         <h2>{disc.name}</h2>
@@ -45,6 +40,12 @@ export default function Compare() {
                         <p >{disc.discPrice}€</p>
                         <a href={disc.pageUrl}>Go to page</a>
                         <br />
+                        <Image
+                                    src={disc.pictureUrl}
+                                    width={150}
+                                    height={150}
+                                    alt={disc.name}
+                                />
                         <button onClick={() => handleRemoveFromCompare(disc.discFromPageId)}>Remove</button>
                     </div>
                 ))}

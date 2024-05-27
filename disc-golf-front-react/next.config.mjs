@@ -12,6 +12,21 @@ const nextConfig = {
             hostname: 'discgolf.ee',
             pathname: '**',
           },
+          {
+            protocol: 'https',
+            hostname: 'discgolfar.ee',
+            pathname: '**',
+          },
+          {
+            protocol: 'https',
+            hostname: 'discy.ee',
+            pathname: '**',
+          },
+          {
+            protocol: 'http',
+            hostname: 'thuledg.ee',
+            pathname: '**',
+          }
         ],
       }
 }

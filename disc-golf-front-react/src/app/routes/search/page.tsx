@@ -31,7 +31,8 @@ export default function Search() {
     };
 
     return (
-        <div>
+        <>
+        <div className="search-bar">
             <input
                 type="text"
                 placeholder="Search discs..."
@@ -39,6 +40,9 @@ export default function Search() {
                 onChange={handleSearchChange}
                 className="search-input"
             />
+            </div>
+        <div className="disc-grid-container">
+            
             <div className="disc-grid">
                 {isLoading ? (
                     <p>Loading...</p>
@@ -64,5 +68,6 @@ export default function Search() {
                 )}
             </div>
         </div>
+        </>
     );
 }

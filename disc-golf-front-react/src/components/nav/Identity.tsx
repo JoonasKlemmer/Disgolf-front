@@ -17,7 +17,7 @@ const LoggedIn = () => {
     const { userInfo, setUserInfo } = useContext(AppContext)!;
 
     const doLogout = () => {
-        AccountService.logout(userInfo!)
+        AccountService.logout()
         setUserInfo(null);
     }
 

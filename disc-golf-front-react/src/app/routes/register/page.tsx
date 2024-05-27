@@ -32,22 +32,22 @@ export default function Register() {
             return;
         }
         if (3 > values.firstName.length && values.firstName.length > 64) {
-            setvalidationError("First name must be between 3 and 64 characters");
+            setvalidationError("First name must be between 3 and 64 characters!");
             return;
         }
 
         if (3 > values.lastName.length && values.lastName.length > 64) {
-            setvalidationError("Last name must be between 3 and 64 characters");
+            setvalidationError("Last name must be between 3 and 64 characters!");
             return;
         }
 
         if (3 > values.password.length && values.password.length > 64) {
-            setvalidationError("Name must be between 3 and 64 characters");
+            setvalidationError("Name must be between 3 and 64 characters!");
             return;
         }
 
         if (values.password !== values.confirmPassword) {
-            setvalidationError("Passwords do not match");
+            setvalidationError("Passwords do not match!");
             return;
         }
 
@@ -58,7 +58,7 @@ export default function Register() {
         }
 
         if (response.errors && response.errors.length > 0) {
-            setvalidationError(response.errors[0]);
+            setvalidationError("Email already exists!");
         }
 
     }
@@ -68,18 +68,19 @@ export default function Register() {
             <div className="col-md-5">
                 <h2>Register</h2>
                 <hr />
+                <div className="text-danger" role="alert">{validationError}</div>
                 <div className="form-floating mb-3">
-                    <input onChange={(e) => { handleChange(e.target) }}
+                    <input onChange={(e) => { handleChange(e.target); setvalidationError(""); }}
                         id="firstName" name="firstName" type="text" className="form-control" value={values.firstName} autoComplete="firstName" placeholder="John" />
                     <label htmlFor="firstName" className="form-label">First name</label>
                 </div>
                 <div className="form-floating mb-3">
                     <input
-                         onChange={(e) => { handleChange(e.target) }}
+                         onChange={(e) => { handleChange(e.target); setvalidationError(""); }}
                         id="lastName" name="lastName" type="lastName" className="form-control" value={values.lastName} autoComplete="lastName" placeholder="Doe" />
                     <label htmlFor="lastName" className="form-label">Last name</label>
                 </div>
-                <div className="text-danger" role="alert">{validationError}</div>
+                
                 <div className="form-floating mb-3">
                     <input
                         onChange={(e) => { handleChange(e.target); setvalidationError(""); }}

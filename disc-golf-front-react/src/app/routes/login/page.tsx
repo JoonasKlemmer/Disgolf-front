@@ -4,7 +4,7 @@ import AccountService from "@/services/AccountService";
 import { AppContext } from "@/state/AppContext";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
-
+//LOGIN
 export default function Login() {
     const router = useRouter();
     const [email, setEmail] = useState("WSTS@gmail.com");

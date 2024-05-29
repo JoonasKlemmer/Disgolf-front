@@ -1,5 +1,5 @@
 "use client"
-import { SetStateAction, useEffect, useState } from "react";
+import { ChangeEvent, SetStateAction, useEffect, useState } from "react";
 import DiscService from "@/services/DiscService";
 import { useRouter } from "next/navigation";
 import { IDisc } from "@/domain/IDisc";
@@ -9,7 +9,7 @@ export default function Search() {
     const [discs, setDiscs] = useState<IDisc[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    const [discsPerPage] = useState(9); // Number of discs per page
+    const [discsPerPage, setDiscsPerPage] = useState(6);
     const router = useRouter();
 
     useEffect(() => {
@@ -44,6 +44,10 @@ export default function Search() {
         router.push(`/routes/disc/${disc.id}`)
     };
 
+    const handleDiscsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        setDiscsPerPage(Number(e.target.value));
+        setCurrentPage(1);
+    };
 
     const indexOfLastDisc = currentPage * discsPerPage;
     const indexOfFirstDisc = indexOfLastDisc - discsPerPage;
@@ -52,7 +56,6 @@ export default function Search() {
             disc.name.toLowerCase().includes(searchTerm.toLowerCase())
         )
         .slice(indexOfFirstDisc, indexOfLastDisc);
-
 
     return (
         <>
@@ -87,7 +90,12 @@ export default function Search() {
                     )}
                 </div>
             </div>
-           <div className="pagination">
+            <div className="pagination">
+                <select value={discsPerPage} onChange={handleDiscsPerPageChange}>
+                    {Array.from({ length: discs.length }, (_, i) => i + 1).map(number => (
+                        <option key={number} value={number}>{number}</option>
+                    ))}
+                </select>
                 <button onClick={prevPage}>Previous</button>
                 <button onClick={nextPage}>Next</button>
             </div>

@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { IDiscFromPage } from "@/domain/IDiscFromPage";
 import { handleDeleteFromWishlist } from "@/components/AddOrRemoveFromWishlist";
 import AccountService from "@/services/AccountService";
-import Image from 'next/image'
+import Image from 'next/image';
 
 export default function Wishlist() {
     const router = useRouter();
@@ -16,8 +16,6 @@ export default function Wishlist() {
     const [wishlists, setWishlists] = useState<IWishlist[]>([]);
     const [discsInWishlist, setDiscsInWishlist] = useState<IDiscFromPage[]>([]);
     const { userInfo } = useContext(AppContext)!;
-
-
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -29,7 +27,6 @@ export default function Wishlist() {
             const fetchData = async () => {
                 await AccountService.isTokenExpired();
                 try {
-
                     const wishlistResponse = await WishlistService.getAll();
                     if (wishlistResponse.data) {
                         setWishlists(wishlistResponse.data);
@@ -75,13 +72,12 @@ export default function Wishlist() {
                             <div className="disc-grid">
                                 {discsInWishlist.map((disc, index) => (
                                     <div key={index} className="disc-item">
-    
                                         <h2>{disc.name}</h2>
                                         <p>{disc.speed} | {disc.glide} | {disc.turn} | {disc.fade}</p>
                                         <p>{disc.manufacturerName}</p>
                                         <p>{disc.categoryName}</p>
                                         <p>{disc.discPrice}</p>
-                                        <button onClick={() => handleDiscDeletion(disc.discsInWishlistId)}className="round-button">Remove</button>
+                                        <button onClick={() => handleDiscDeletion(disc.discsInWishlistId)} className="round-button">Remove</button>
                                         <a href={disc.pageUrl} target="_blank" className="page-link" data-url={disc.pageUrl}>
                                             <Image
                                                 src={disc.pictureUrl}

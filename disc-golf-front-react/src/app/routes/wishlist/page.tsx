@@ -75,26 +75,25 @@ export default function Wishlist() {
                             <div className="disc-grid">
                                 {discsInWishlist.map((disc, index) => (
                                     <div key={index} className="disc-item">
-
+    
                                         <h2>{disc.name}</h2>
                                         <p>{disc.speed} | {disc.glide} | {disc.turn} | {disc.fade}</p>
                                         <p>{disc.manufacturerName}</p>
                                         <p>{disc.categoryName}</p>
                                         <p>{disc.discPrice}</p>
-                                        <p><a href={disc.pageUrl} target="_blank">Go to page</a></p>
-                                        <button onClick={() => handleDiscDeletion(disc.discsInWishlistId)}>Remove</button>
-                                        <Image
-                                            src={disc.pictureUrl}
-                                            width={200}
-                                            height={200}
-                                            alt={disc.name}
-                                        />
+                                        <button onClick={() => handleDiscDeletion(disc.discsInWishlistId)}className="round-button">Remove</button>
+                                        <a href={disc.pageUrl} target="_blank" className="page-link" data-url={disc.pageUrl}>
+                                            <Image
+                                                src={disc.pictureUrl}
+                                                width={200}
+                                                height={200}
+                                                alt={disc.name}
+                                                className="image"
+                                            />
+                                        </a>
                                     </div>
-
-
                                 ))}
                             </div>
-
                         </div>
                     ))}
                 </>

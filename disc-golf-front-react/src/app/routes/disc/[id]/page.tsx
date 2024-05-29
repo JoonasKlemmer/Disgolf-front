@@ -49,30 +49,33 @@ export default function DiscDetails() {
 
     return (
         <div className="centered-container">
-            <div className="disc-item">
+            <div className="grid-container">
                 {discs.map((disc) => (
-                    <div key={disc.discFromPageId} className="discs-item">
-                        <a href={disc.pageUrl} target="_blank">
-                            Go to page
+                    <div key={disc.discFromPageId} className="disc-item">
+                        <a href={disc.pageUrl} target="_blank" className="page-link" data-url={disc.pageUrl}>
+                            <Image
+                                src={disc.pictureUrl}
+                                width={200}
+                                height={200}
+                                alt={disc.name}
+                                className="image"
+                            />
                         </a>
                         <div className="price-buttons-container">
                             <p>{disc.discPrice}€</p>
                             {userInfo && (
-                                <button onClick={() => handleAddToWishlist(disc)}>Add to Wishlist</button>
+                                <button onClick={() => handleAddToWishlist(disc)} className="round-button">
+                                    Add to Wishlist
+                                </button>
                             )}
-                            <button onClick={() => handleCompare(disc)} className="action-button">
+                            <button onClick={() => handleCompare(disc)} className="round-button">
                                 Compare
                             </button>
-                            <Image
-                                    src={disc.pictureUrl}
-                                    width={200}
-                                    height={200}
-                                    alt={disc.name}
-                                />
                         </div>
                     </div>
                 ))}
             </div>
         </div>
     );
+    
 }

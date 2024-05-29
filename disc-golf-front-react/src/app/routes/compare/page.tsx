@@ -31,22 +31,22 @@ export default function Compare() {
             <div className="disc-grid">
                 {compareList.map((disc, index) => (
                     <div key={index} className="disc-item">
+
                         <h2>{disc.name}</h2>
-                        <p>
-                            {disc.speed} | {disc.glide} | {disc.turn} | {disc.fade}
-                        </p>
+                        <p>{disc.speed} | {disc.glide} | {disc.turn} | {disc.fade}</p>
                         <p>{disc.manufacturerName}</p>
                         <p>{disc.categoryName}</p>
-                        <p >{disc.discPrice}€</p>
-                        <a href={disc.pageUrl}>Go to page</a>
-                        <br />
-                        <Image
-                                    src={disc.pictureUrl}
-                                    width={150}
-                                    height={150}
-                                    alt={disc.name}
-                                />
-                        <button onClick={() => handleRemoveFromCompare(disc.discFromPageId)}>Remove</button>
+                        <p>{disc.discPrice}</p>
+                        <button onClick={() => handleRemoveFromCompare(disc.discsInWishlistId)} className="round-button">Remove</button>
+                        <a href={disc.pageUrl} target="_blank" className="page-link" data-url={disc.pageUrl}>
+                            <Image
+                                src={disc.pictureUrl}
+                                width={200}
+                                height={200}
+                                alt={disc.name}
+                                className="image"
+                            />
+                        </a>
                     </div>
                 ))}
             </div>

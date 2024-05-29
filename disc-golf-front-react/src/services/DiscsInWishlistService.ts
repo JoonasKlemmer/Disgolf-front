@@ -14,8 +14,8 @@ export default class DiscsInWishlistService {
     
 
     private static httpClient = axios.create({
-        baseURL: 'https://localhost:7160/api/v1.0/discsinwishlist',
-        //baseURL: 'https://joklemwebapp24.azurewebsites.net/api/v1.0/discsinwishlist',
+        //baseURL: 'https://localhost:7160/api/v1.0/discsinwishlist',
+        baseURL: 'https://joklemwebapp24.azurewebsites.net/api/v1.0/discsinwishlist',
         
     });
 

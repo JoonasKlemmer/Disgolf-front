@@ -15,7 +15,9 @@ html {
 .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
-
+.page-link{
+    margin: auto;
+}
 html {
     position: relative;
     min-height: 100%;
@@ -29,11 +31,12 @@ body {
 
 
 .disc-item {
-    background-color: #ffffff; /* Optional: Add some background color for better visibility */
-    border: 2px solid #05050579; /* Optional: Add some border */
-    border-radius: 20px; /* Optional: Add some border radius */
-    padding: 40px;
-    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 40px;
+    border: 1px solid #0c0c0c;
+    text-align: center;
 }
   
 
@@ -70,9 +73,7 @@ body {
     align-items: center;
 }
 
-.action-button {
-    margin-left: 10px;
-}
+
 
 .bg-blue {
     background-color: #0099ffc7 !important; /* Bootstrap primary blue */
@@ -134,6 +135,12 @@ body {
     z-index: 1000; /* Ensure the footer is above other elements */
 }
 
+.centered-image {
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
 
 .pages-container {
     display: flex;
@@ -142,4 +149,42 @@ body {
     justify-content: center; 
     min-height: 90vh; 
     text-align: center; 
+}
+
+
+.grid-container {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.grid-item {
+    border: 1px solid #ccc; /* Optional: Add border to grid items */
+    padding: 16px; /* Optional: Add padding to grid items */
+    background-color: #fff; /* Optional: Add background color to grid items */
+    text-align: center; /* Optional: Center align text */
+}
+page-link {
+    margin: 8px 0;
+    color: blue; /* Optional: Customize link color */
+    text-decoration: underline; /* Optional: Customize link style */
+    position: relative; /* Required for tooltip positioning */
+}
+
+.page-link:hover::after {
+    content: attr(data-url); /* Display URL content */
+    position: absolute; /* Position the tooltip */
+    bottom: -20px; /* Adjust as needed */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%);
+    white-space: nowrap; /* Prevent line break */
+    background-color: #07f3d4; /* Tooltip background color */
+    color: #000000; /* Tooltip text color */
+    padding: 4px 8px; /* Add padding to the tooltip */
+    border-radius: 4px; /* Rounded corners */
+}
+.round-button {
+    border-radius: 20px; /* Adjust the border-radius as needed */
+    padding: 4px 10px; /* Add padding to ensure the button has enough space */
 }

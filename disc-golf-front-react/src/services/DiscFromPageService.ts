@@ -11,8 +11,8 @@ export default class DiscService {
     }
 
     private static httpClient = axios.create({
-        //baseURL: 'https://localhost:7160/api/v1.0/discfrompage',
-        baseURL: 'https://joklemwebapp24.azurewebsites.net/api/v1.0/discfrompage',
+        baseURL: 'https://localhost:7160/api/v1.0/discfrompage',
+        //baseURL: 'https://joklemwebapp24.azurewebsites.net/api/v1.0/discfrompage',
     });
 
     static async getDiscFromPageById(discId: string): Promise<IResultObject<IDiscFromPage[]>>{

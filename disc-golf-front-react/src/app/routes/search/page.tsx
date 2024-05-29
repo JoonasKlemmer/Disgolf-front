@@ -4,11 +4,12 @@ import DiscService from "@/services/DiscService";
 import { useRouter } from "next/navigation";
 import { IDisc } from "@/domain/IDisc";
 
-
 export default function Search() {
     const [isLoading, setIsLoading] = useState(true);
     const [discs, setDiscs] = useState<IDisc[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [discsPerPage] = useState(9); // Number of discs per page
     const router = useRouter();
 
     useEffect(() => {
@@ -22,36 +23,54 @@ export default function Search() {
         loadData();
     }, []);
 
+    const nextPage = () => {
+        if (currentPage < Math.ceil(discs.length / discsPerPage)) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const prevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
     const handleSearchChange = (e: { target: { value: SetStateAction<string> } }) => {
         setSearchTerm(e.target.value);
+        setCurrentPage(1);
     };
 
     const handleDiscClick = (disc: IDisc) => {
         router.push(`/routes/disc/${disc.id}`)
     };
 
+
+    const indexOfLastDisc = currentPage * discsPerPage;
+    const indexOfFirstDisc = indexOfLastDisc - discsPerPage;
+    const currentDiscs = discs
+        .filter((disc) =>
+            disc.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        .slice(indexOfFirstDisc, indexOfLastDisc);
+
+
     return (
         <>
-        <div className="search-bar">
-            <input
-                type="text"
-                placeholder="Search discs..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-                className="search-input"
-            />
+            <div className="search-bar">
+                <input
+                    type="text"
+                    placeholder="Search discs..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    className="search-input"
+                />
             </div>
-        <div className="disc-grid-container">
-            
-            <div className="disc-grid">
-                {isLoading ? (
-                    <p>Loading...</p>
-                ) : (
-                    discs
-                        .filter((disc) =>
-                            disc.name.toLowerCase().includes(searchTerm.toLowerCase())
-                        )
-                        .map((disc) => (
+            <div className="disc-grid-container">
+                <div className="disc-grid">
+                    {isLoading ? (
+                        <p>Loading...</p>
+                    ) : (
+                        currentDiscs.map((disc) => (
                             <div
                                 key={disc.id}
                                 className="disc-item"
@@ -65,9 +84,13 @@ export default function Search() {
                                 <p>{disc.categoryName}</p>
                             </div>
                         ))
-                )}
+                    )}
+                </div>
             </div>
-        </div>
+           <div className="pagination">
+                <button onClick={prevPage}>Previous</button>
+                <button onClick={nextPage}>Next</button>
+            </div>
         </>
     );
 }

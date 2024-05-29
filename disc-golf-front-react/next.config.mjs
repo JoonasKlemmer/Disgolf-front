@@ -23,7 +23,7 @@ const nextConfig = {
         pathname: '**',
       },
       {
-        protocol: 'http',
+        protocol: 'https',
         hostname: 'thuledg.ee',
         pathname: '**',
       },

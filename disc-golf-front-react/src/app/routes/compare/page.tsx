@@ -37,7 +37,7 @@ export default function Compare() {
                         <p>{disc.manufacturerName}</p>
                         <p>{disc.categoryName}</p>
                         <p>{disc.discPrice}</p>
-                        <button onClick={() => handleRemoveFromCompare(disc.discsInWishlistId)} className="round-button">Remove</button>
+                        <button onClick={() => handleRemoveFromCompare(disc.discFromPageId)} className="round-button">Remove</button>
                         <a href={disc.pageUrl} target="_blank" className="page-link" data-url={disc.pageUrl}>
                             <Image
                                 src={disc.pictureUrl}

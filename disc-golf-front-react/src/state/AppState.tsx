@@ -21,7 +21,7 @@ const AppState: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
             localStorage.setItem("userData", JSON.stringify(userInfo));
         }
     }, [userInfo]);
-
+    
     return (
         <AppContext.Provider value={{ userInfo, setUserInfo }}>
             {children}

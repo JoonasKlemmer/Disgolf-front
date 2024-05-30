@@ -22,11 +22,6 @@ const nextConfig = {
         hostname: 'discy.ee',
         pathname: '**',
       },
-      {
-        protocol: 'http',
-        hostname: 'thuledg.ee',
-        pathname: '**',
-      },
     ],
   },
 }

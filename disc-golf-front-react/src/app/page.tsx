@@ -46,16 +46,6 @@ export default function Home() {
 						/>
 					</a>
 				</p>
-				<p>
-					<a href="https://thuledg.ee/" target='_blank'>
-						<Image
-							src={"http://thuledg.ee/wp-content/uploads/2020/07/wide-web.png"}
-							width={200}
-							height={100}
-							alt={"discy.ee"}
-						/>
-					</a>
-				</p>
 			</div>
 		</>
 	);

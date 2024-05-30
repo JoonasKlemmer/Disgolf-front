@@ -3,6 +3,7 @@ import Image from 'next/image'
 export default function Home() {
 	return (
 		<>
+		
 			<div className='pages-container'>
 				<p><a href="/routes/search">Leia</a> omale parim ketas</p>
 				<p>Hetkel võimalik leida kettaid järgnevatelt lehtedelt:</p>

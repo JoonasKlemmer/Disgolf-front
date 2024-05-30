@@ -12,7 +12,6 @@ import Image from 'next/image';
 
 export default function Wishlist() {
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(true);
     const [wishlists, setWishlists] = useState<IWishlist[]>([]);
     const [discsInWishlist, setDiscsInWishlist] = useState<IDiscFromPage[]>([]);
     const { userInfo } = useContext(AppContext)!;
@@ -37,10 +36,8 @@ export default function Wishlist() {
                             }
                         }
                     }
-                    setIsLoading(false);
                 } catch (error) {
                     console.error("Error loading wishlists:", error);
-                    setIsLoading(false);
                 }
             };
 
@@ -62,10 +59,7 @@ export default function Wishlist() {
 
     return (
         <>
-            {isLoading ? (
-                <h2>Loading...</h2>
-            ) : (
-                <>
+
                     {wishlists.map((wishlist) => (
                         <div key={wishlist.id}>
                             <h1>{wishlist.wishlistName}</h1>
@@ -92,8 +86,6 @@ export default function Wishlist() {
                             </div>
                         </div>
                     ))}
-                </>
-            )}
         </>
     );
 }

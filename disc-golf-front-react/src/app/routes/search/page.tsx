@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { IDisc } from "@/domain/IDisc";
 
 export default function Search() {
-    const [isLoading, setIsLoading] = useState(true);
     const [discs, setDiscs] = useState<IDisc[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
@@ -18,7 +17,6 @@ export default function Search() {
             if (response.data) {
                 setDiscs(response.data);
             }
-            setIsLoading(false);
         };
         loadData();
     }, []);
@@ -70,10 +68,7 @@ export default function Search() {
             </div>
             <div className="disc-grid-container">
                 <div className="disc-grid">
-                    {isLoading ? (
-                        <p>Loading...</p>
-                    ) : (
-                        currentDiscs.map((disc) => (
+                        {currentDiscs.map((disc) => (
                             <div
                                 key={disc.id}
                                 className="disc-item"
@@ -86,8 +81,7 @@ export default function Search() {
                                 <p>{disc.manufacturerName}</p>
                                 <p>{disc.categoryName}</p>
                             </div>
-                        ))
-                    )}
+                        ))}
                 </div>
             </div>
             <div className="pagination">

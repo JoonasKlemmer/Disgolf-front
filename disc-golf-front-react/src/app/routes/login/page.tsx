@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 export default function Login() {
     const router = useRouter();
-    const [email, setEmail] = useState("WSTS@gmail.com");
-    const [pwd, setPwd] = useState("Joonash34!");
+    const [email, setEmail] = useState("");
+    const [pwd, setPwd] = useState("");
 
     const [validationError, setvalidationError] = useState("");
 

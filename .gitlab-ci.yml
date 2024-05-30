@@ -9,5 +9,5 @@ deploy-job-master:
   script:
     - docker ps
     - docker system prune -a --volumes -f
-    - docker login -u joklem -p $dockerhub
+    - docker login -u joklem -p $dockerhub_front
     - cd disc-golf-front-react && docker buildx build --progress=plain --force-rm --push -t joklem/discgolf-front:latest .

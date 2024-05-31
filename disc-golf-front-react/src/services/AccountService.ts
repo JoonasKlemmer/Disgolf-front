@@ -12,8 +12,7 @@ export default class AccountService {
     static readonly expiresInSeconds = 10
     private static httpClient = axios.create(
         {
-            //baseURL: 'https://localhost:7160/api/v1.0/Identity/account/',
-            baseURL: 'https://joklemwebapp24.azurewebsites.net/api/v1.0/Identity/Account/',
+            baseURL: 'https://localhost:7160/api/v1.0/Identity/account/',
         });
 
 

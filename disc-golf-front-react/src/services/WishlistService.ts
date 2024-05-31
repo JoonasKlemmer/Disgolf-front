@@ -9,8 +9,7 @@ export default class WishlistService {
     }
 
     private static httpClient = axios.create({
-        //baseURL: 'https://localhost:7160/api/v1.0/wishlist',
-        baseURL: 'https://joklemwebapp24.azurewebsites.net/api/v1.0/wishlist',
+        baseURL: 'https://localhost:7160/api/v1.0/wishlist',
     });
 
     static async getAll(): Promise<IResultObject<IWishlist[]>>{
